@@ -2,7 +2,7 @@ var projectData;
 var spController;
 
 function collect(dataRow) {
-    
+
     return {
         billName: dataRow.Bill,
         moneyGivenInSupport : +dataRow['Money Given in Favor of Bill'].replace("$", "").replace(",", ""),
@@ -18,7 +18,7 @@ function loadCsvData(callback, filename) {
         callback();
     });
 }
-        
+
 function loadVisualization() {
    //tooltip div
     var tooltip = d3.select("body")
@@ -28,16 +28,16 @@ function loadVisualization() {
                     .style("visibility", "hidden")
                     .style("color","black");
 
-    var margin = {top: 20, right: 20, bottom: 30, left: 40},
-        width = 960 - margin.left - margin.right,
-        height = 500 - margin.top - margin.bottom;
+    var margin = {top: 50, right: 50, bottom: 70, left: 70},
+        width = 600 - margin.left - margin.right,
+        height = 600 - margin.top - margin.bottom;
 
     var spDispatcher = {
         add: function(view){
             if (!this.subscribers){
                 this.subscribers = [];
             }
-            this.subscribers.push(view);  
+            this.subscribers.push(view);
         },
 
         notify: function(type, payload){
@@ -65,7 +65,7 @@ function loadVisualization() {
             spDispatcher.notify('onDataUpdate', dt);
         }
     };
-    
+
     var scatterplot = {
         init: function(width, height, margin) {
             // setup x
@@ -97,9 +97,11 @@ function loadVisualization() {
 
             this.xgroup.append("text")
               .attr("class", "label")
-              .attr("x", width)
-              .attr("y", -6)
-              .style("text-anchor", "end");
+              .attr("x", width/2)
+              .attr("y", 55)
+              .style("text-anchor", "middle")
+              .text("Amount of Funding From Supporters");
+
 
                       // y-axis
           this.ygroup = this.svg.append("g")
@@ -108,14 +110,19 @@ function loadVisualization() {
             this.ygroup.append("text")
               .attr("class", "label")
               .attr("transform", "rotate(-90)")
-              .attr("y", 6)
+              .attr("x", -width/2)
+              .attr("y", -70)
               .attr("dy", ".71em")
-              .style("text-anchor", "end");
+              .style("text-anchor", "middle")
+              .text("Amount of Funding From Opposers");
+
+
+
 
 
         },
         getItem : function(d){ return d3.select('svg').selectAll('circle').filter(function(e){return d.billName == e.billName})},
-        mouseover: function(d){ 
+        mouseover: function(d){
             this.getItem(d).attr("r",8).attr("fill", "green"); return tooltip.style("visibility", "visible").append("span")
                 .html(" <b>Bill</b> : " + d.billName + "<br> <b>GDP</b> : " + d.moneyGivenInSupport + "<br> <b>Money Spent In Oppose</b> : " +d.moneySpentInOppose)},
 
