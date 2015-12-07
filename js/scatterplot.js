@@ -28,7 +28,7 @@ function loadVisualization() {
                     .style("visibility", "hidden")
                     .style("color","black");
 
-    var margin = {top: 50, right: 50, bottom: 70, left: 70},
+    var margin = {top: 30, right: 10, bottom: 70, left: 70},
         width = 600 - margin.left - margin.right,
         height = 600 - margin.top - margin.bottom;
 
