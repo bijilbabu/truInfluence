@@ -1,5 +1,12 @@
 var projectData;
 var spController;
+_.mixin({
+  'findByValues': function(collection, property, values) {
+    return _.filter(collection, function(item) {
+      return _.contains(values, item[property]);
+    });
+  }
+});
 
 function collect(dataRow) {
 
@@ -17,6 +24,72 @@ function loadCsvData(callback, filename) {
         projectData = rows;
         callback();
     });
+}
+
+
+function loadFilter(filterId, filterFn, filterValueFn, dispatcher)
+{
+    return {
+        init: function() {
+            this.list = d3.select(filterId);
+        },
+
+        getElement: function(d){
+            return this.list.selectAll("option").filter(filterFn);
+        },
+
+        onDataUpdate :function(data) {
+            this.selection = this.list.selectAll("option").data(data, filterValueFn);
+            this.selection.enter().append("option").text(filterValueFn).attr('value', filterValueFn);
+
+            this.selection.on('mouseover', function(d){dispatcher.notify('mouseover',d);});
+            this.selection.on('mouseout', function(d){dispatcher.notify('mouseout',d);});
+            this.selection.on('mousemove', function(d){dispatcher.notify('mousemove',d);});
+            this.selection.on('click', function(d){dispatcher.notify('click',d);});
+
+            this.selection.exit().remove();
+            
+            $(function () {
+                $('select').multipleSelect({
+                    placeholder: 'Search',
+                    filter: true,
+                    onClick:function() {
+                        filteredData = _.findByValues(data,"billName", $('select').multipleSelect('getSelects'));
+                                                      
+                        scatterplot.onDataUpdate(filteredData);
+                        
+                    },
+                    onCheckAll : function(){
+                        scatterplot.onDataUpdate(data);
+                    },
+                    onUncheckAll :function(){
+                        scatterplot.onDataUpdate({});
+                    }
+                });
+                
+                $('select').multipleSelect('checkAll');
+                
+            });
+            
+        },
+
+        mouseover : function(d)
+        {
+            console.log(d.billName);
+        },
+        mousemove : function(d)
+        {
+            console.log(d.billName);
+        },
+        mouseout : function(d)
+        {
+            console.log(d.billName);
+        },
+        click : function(d)
+        {
+            console.log(d.billName);
+        }
+    };   
 }
 
 function loadVisualization() {
@@ -66,7 +139,7 @@ function loadVisualization() {
         }
     };
 
-    var scatterplot = {
+    scatterplot = {
         init: function(width, height, margin) {
             // setup x
             this.xValue = function(d) { return d.moneyGivenInSupport;}; // data -> value
@@ -102,8 +175,7 @@ function loadVisualization() {
               .style("text-anchor", "middle")
               .text("Amount of Funding From Supporters");
 
-
-                      // y-axis
+         // y-axis
           this.ygroup = this.svg.append("g")
               .attr("class", "y axis");
 
@@ -115,26 +187,21 @@ function loadVisualization() {
               .attr("dy", ".71em")
               .style("text-anchor", "middle")
               .text("Amount of Funding From Opposers");
-
-
-
-
-
         },
         getItem : function(d){ return d3.select('svg').selectAll('circle').filter(function(e){return d.billName == e.billName})},
         mouseover: function(d){
             this.getItem(d).attr("r",8).attr("fill", "green"); return tooltip.style("visibility", "visible").append("span")
-                .html(" <b>Bill</b> : " + d.billName + "<br> <b>GDP</b> : " + d.moneyGivenInSupport + "<br> <b>Money Spent In Oppose</b> : " +d.moneySpentInOppose)},
+                .html(" <b>Bill</b> : " + d.billName + "<br> <b>Money Given In Support</b> : " + d3.format("$,")(d.moneyGivenInSupport) + "<br> <b>Money Spent In Oppose</b> : " + d3.format("$,")(d.moneySpentInOppose))},
 
         mouseout: function(d){
             this.getItem(d).attr("r",4).attr("fill", "red"); return tooltip.style("visibility", "hidden").selectAll("span").remove();
         },
 
         mousemove: function(d){
-            return tooltip.style("top", (+d3.select(this.getItem(d)[0][0]).attr('cy')+100)+"px").style("left",(+d3.select(this.getItem(d)[0][0]).attr('cx')+410)+"px");
+         return tooltip.style("top", (+d3.select(this.getItem(d)[0][0]).attr('cy')+160)+"px").style("left",(+d3.select(this.getItem(d)[0][0]).attr('cx')+120)+"px");
         },
 
-        click: function(d){d3.select('#infoDiv').html(" <b>Bill</b> : " + d.billName + "<br> <b>GDP</b> : " + d.moneyGivenInSupport + "<br> <b>Money Spent In Oppose</b> : " +d.moneySpentInOppose)},
+        click: function(d){d3.select('#infoDiv').html(" <b>Bill</b> : " + d.billName + "<br> <b>Money Given In Support</b> : " + d3.format("$,")(d.moneyGivenInSupport) + "<br> <b>Money Spent In Oppose</b> : " + d3.format("$,")(d.moneySpentInOppose))},
 
 
         onDataUpdate: function(data)
@@ -168,8 +235,11 @@ function loadVisualization() {
         }
     };
 
+    var cl = loadFilter('#billFilter', function(e, d) {return d.billName == e.billName;}, function(d){return d.billName}, spDispatcher);
     scatterplot.init(width, height, margin);
+    cl.init();
     spDispatcher.add(scatterplot);
+    spDispatcher.add(cl);
     spController.loadData(projectData);
 }
 
