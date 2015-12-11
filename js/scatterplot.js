@@ -48,16 +48,16 @@ function loadFilter(filterId, filterFn, filterValueFn, dispatcher)
             this.selection.on('click', function(d){dispatcher.notify('click',d);});
 
             this.selection.exit().remove();
-            
+
             $(function () {
                 $('select').multipleSelect({
                     placeholder: 'Search',
                     filter: true,
                     onClick:function() {
                         filteredData = _.findByValues(data,"billName", $('select').multipleSelect('getSelects'));
-                                                      
+
                         scatterplot.onDataUpdate(filteredData);
-                        
+
                     },
                     onCheckAll : function(){
                         scatterplot.onDataUpdate(data);
@@ -66,11 +66,11 @@ function loadFilter(filterId, filterFn, filterValueFn, dispatcher)
                         scatterplot.onDataUpdate({});
                     }
                 });
-                
+
                 $('select').multipleSelect('checkAll');
-                
+
             });
-            
+
         },
 
         mouseover : function(d)
@@ -89,7 +89,7 @@ function loadFilter(filterId, filterFn, filterValueFn, dispatcher)
         {
             console.log(d.billName);
         }
-    };   
+    };
 }
 
 function loadVisualization() {
@@ -99,6 +99,9 @@ function loadVisualization() {
                     .style("position", "absolute")
                     .style("z-index", "10")
                     .style("visibility", "hidden")
+                    .style("border", "1px solid grey")
+                    .style("background-color", "white")
+                    .style("padding", "10px")
                     .style("color","black");
 
     var margin = {top: 30, right: 10, bottom: 70, left: 70},
@@ -190,8 +193,8 @@ function loadVisualization() {
         },
         getItem : function(d){ return d3.select('svg').selectAll('circle').filter(function(e){return d.billName == e.billName})},
         mouseover: function(d){
-            this.getItem(d).attr("r",8).attr("fill", "green"); return tooltip.style("visibility", "visible").append("span")
-                .html(" <b>Bill</b> : " + d.billName + "<br> <b>Money Given In Support</b> : " + d3.format("$,")(d.moneyGivenInSupport) + "<br> <b>Money Spent In Oppose</b> : " + d3.format("$,")(d.moneySpentInOppose))},
+            this.getItem(d).attr("r",8).attr("fill", "black"); return tooltip.style("visibility", "visible").append("span")
+                .html(" <b>Bill</b> : " + d.billName + "<br> <b>Bill Status</b> : " + d.billStatus +"<br> <b>Money Given In Support</b> : " + d3.format("$,")(d.moneyGivenInSupport) + "<br> <b>Money Spent In Oppose</b> : " + d3.format("$,")(d.moneySpentInOppose))},
 
         mouseout: function(d){
             this.getItem(d).attr("r",4).attr("fill", "red"); return tooltip.style("visibility", "hidden").selectAll("span").remove();
