@@ -144,6 +144,7 @@ function loadVisualization() {
 
     scatterplot = {
         init: function(width, height, margin) {
+            _this=this;
             // setup x
             this.xValue = function(d) { return d.moneyGivenInSupport;}; // data -> value
             this.xScale = d3.scale.linear().range([0,width]); // value -> display
@@ -157,7 +158,7 @@ function loadVisualization() {
             this.yAxis = d3.svg.axis().scale(this.yScale).orient("left").tickFormat(function(d){return "$" + +d/1000 + "k"});
 
             // setup fill color
-            this.cValue = function(d) { return d.moneyGivenInSupport;};
+            this.cValue = function(d) { return d.billStatus;};
             this.color = d3.scale.category10();
 
             this.svg =d3.select("svg")
@@ -197,7 +198,7 @@ function loadVisualization() {
                 .html(" <b>Bill</b> : " + d.billName + "<br> <b>Bill Status</b> : " + d.billStatus +"<br> <b>Money Given In Support</b> : " + d3.format("$,")(d.moneyGivenInSupport) + "<br> <b>Money Spent In Oppose</b> : " + d3.format("$,")(d.moneySpentInOppose))},
 
         mouseout: function(d){
-            this.getItem(d).attr("r",4).attr("fill", "red"); return tooltip.style("visibility", "hidden").selectAll("span").remove();
+            this.getItem(d).attr("r",4).attr("fill", function(d) { return _this.color(_this.cValue(d));} ); return tooltip.style("visibility", "hidden").selectAll("span").remove();
         },
 
         mousemove: function(d){
@@ -233,7 +234,7 @@ function loadVisualization() {
             r: 4,
             cx: this.xMap,
             cy: this.yMap,
-            fill: "red",opacity: 0.5
+            fill: function(d) { return _this.color(_this.cValue(d));} ,opacity: 0.5
             })
         }
     };
