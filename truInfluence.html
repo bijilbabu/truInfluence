@@ -43,6 +43,22 @@
                position: fixed;
                padding: 5px;
              }
+            rect.bordered {
+                stroke: #E6E6E6;
+                stroke-width:2px;
+              }
+              text.mono {
+                font-size: 6pt;
+                font-family: Consolas, courier;
+                fill: #aaa;
+              }
+              text.axis-workweek {
+                font-size: 6pt;
+                fill: #000;
+              }
+              text.axis-worktime {
+                fill: #000;
+              }
          </style>
     </head>
     <body>
@@ -54,34 +70,19 @@
             </div>
         </nav>
         <div class="container-fluid" style="padding-left: 40px;">
-          <script>
-          $(document).ready(function(){
-            $("#demo").on("hide.bs.collapse", function(){
-              $(".btn").html('<span class="glyphicon glyphicon-collapse-down"></span> Show Filters');
-            });
-            $("#demo").on("show.bs.collapse", function(){
-              $(".btn").html('<span class="glyphicon glyphicon-collapse-up"></span> Hide Filters');
-            });
-          });
-          </script>
           <div class="row">
               <div class="col-md-12">
-                 <strong> Bill Vote Outcomes & Campaign Funding </strong> <button type="button" class="btn btn-link" data-toggle="collapse" data-target="#demo" style="padding-left: 10px;">
-                  <span class="glyphicon glyphicon-collapse-down"></span> Show Filters
-                </button>
-                <div id="demo" class="collapse" style="padding-top: 10px;">
+                  <div style="padding-bottom: 10px;"> <strong> FILTER BY </strong></div>
                   <label style="font-weight: normal" class="control-label">Bill</label>
-                  <select id='billFilter' class="" style="width: 120px;" multiple="multiple">
-                  </select>
-                </div>
-                  <!-- <div style="padding-bottom: 10px;"> <strong> FILTER BY </strong></div>
-                  <label style="font-weight: normal" class="control-label">Bill</label>
-                <select id='billFilter' class="" style="width: 120px;" multiple="multiple">
-                </select> -->
+                    <select id='billFilter' class="" style="width: 120px;" multiple="multiple">
+                    </select>
+                  <label style="font-weight: normal" class="control-label">Bill Status</label>
+                    <select id='billStatusFilter' class="" style="width: 120px;" multiple="multiple">
+                    </select>
               </div>
           </div>
+          <hr>
         </div>
-        <hr>
 
         <div class="container-fluid" style="padding-left: 40px;">
           <div class="row">
@@ -91,8 +92,8 @@
                 </div>
               </div>
               <div class="col-md-3">
-
-          </div>
+                <div id="chart"></div>
+              </div>
         </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -102,8 +103,6 @@
         <script src="http://d3js.org/d3.v3.min.js"></script>
         <script src="js/scatterplot.js"></script>
         <script src="js/multiple-select.js"></script>
-        <script>
-
-        </script>
+        <script src="js/heatmap.js"></script>
     </body>
 </html>
