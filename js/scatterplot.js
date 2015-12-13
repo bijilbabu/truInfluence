@@ -26,8 +26,7 @@ function loadCsvData(callback, filename) {
     });
 }
 
-
-function loadFilter(filterId, filterFn, filterValueFn, dispatcher)
+function loadFilter(filterId, filterFn, filterValueFn, dispatcher, filterName)
 {
     return {
         init: function() {
@@ -49,14 +48,13 @@ function loadFilter(filterId, filterFn, filterValueFn, dispatcher)
 
             this.selection.exit().remove();
 
-            $(function () {
-                $('select').multipleSelect({
+            $(function(){
+                $(filterId).multipleSelect({
                     placeholder: 'Search',
                     filter: true,
                     onClick:function() {
-                        filteredData = _.findByValues(data,"billName", $('select').multipleSelect('getSelects'));
-
-                        scatterplot.onDataUpdate(filteredData);
+                        this.filteredData = _.findByValues(data,filterName, $(filterId).multipleSelect('getSelects'));
+                        scatterplot.onDataUpdate(this.filteredData);
 
                     },
                     onCheckAll : function(){
@@ -67,34 +65,17 @@ function loadFilter(filterId, filterFn, filterValueFn, dispatcher)
                     }
                 });
 
-                $('select').multipleSelect('checkAll');
-
+                $(filterId).multipleSelect('checkAll');
             });
-
         },
 
-        mouseover : function(d)
-        {
-            console.log(d.billName);
-        },
-        mousemove : function(d)
-        {
-            console.log(d.billName);
-        },
-        mouseout : function(d)
-        {
-            console.log(d.billName);
-        },
-        click : function(d)
-        {
-            console.log(d.billName);
-        }
+        mouseover : function(d){},
+        mousemove : function(d){},
+        mouseout : function(d){},
+        click : function(d){}
     };
 }
-
-function loadVisualization() {
-   //tooltip div
-    var tooltip = d3.select("body")
+var tooltip = d3.select("body")
                     .append("div")
                     .style("position", "absolute")
                     .style("z-index", "10")
@@ -103,6 +84,9 @@ function loadVisualization() {
                     .style("background-color", "white")
                     .style("padding", "10px")
                     .style("color","black");
+
+function loadVisualization() {
+    
 
     var margin = {top: 30, right: 10, bottom: 70, left: 70},
         width = 600 - margin.left - margin.right,
@@ -205,7 +189,9 @@ function loadVisualization() {
          return tooltip.style("top", (+d3.select(this.getItem(d)[0][0]).attr('cy')+160)+"px").style("left",(+d3.select(this.getItem(d)[0][0]).attr('cx')+120)+"px");
         },
 
-        click: function(d){d3.select('#infoDiv').html(" <b>Bill</b> : " + d.billName + "<br> <b>Money Given In Support</b> : " + d3.format("$,")(d.moneyGivenInSupport) + "<br> <b>Money Spent In Oppose</b> : " + d3.format("$,")(d.moneySpentInOppose))},
+        click: function(d){
+            loadHeatMapChart(_.filter(hmData, 'bill', d.billName));
+            d3.select('#infoDiv').html(" <b>Bill</b> : " + d.billName + "<br> <b>Money Given In Support</b> : " + d3.format("$,")(d.moneyGivenInSupport) + "<br> <b>Money Spent In Oppose</b> : " + d3.format("$,")(d.moneySpentInOppose))},
 
 
         onDataUpdate: function(data)
@@ -239,11 +225,14 @@ function loadVisualization() {
         }
     };
 
-    var cl = loadFilter('#billFilter', function(e, d) {return d.billName == e.billName;}, function(d){return d.billName}, spDispatcher);
+    var billFilter = loadFilter('#billFilter', function(e, d) {return d.billName == e.billName;}, function(d){return d.billName}, spDispatcher, 'billName');
+    var billStatusFilter = loadFilter('#billStatusFilter', function(e, d) {return d.billStatus == e.billStatus;}, function(d){return d.billStatus}, spDispatcher, 'billStatus');
     scatterplot.init(width, height, margin);
-    cl.init();
+    billFilter.init();
+    billStatusFilter.init();
     spDispatcher.add(scatterplot);
-    spDispatcher.add(cl);
+    spDispatcher.add(billFilter);
+    spDispatcher.add(billStatusFilter);
     spController.loadData(projectData);
 }
 

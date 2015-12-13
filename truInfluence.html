@@ -43,6 +43,25 @@
                position: fixed;
                padding: 5px;
              }
+            rect.bordered {
+                stroke: #E6E6E6;
+                stroke-width:2px;   
+              }
+
+              text.mono {
+                font-size: 6pt;
+                font-family: Consolas, courier;
+                fill: #aaa;
+              }
+
+              text.axis-workweek {
+                font-size: 6pt;
+                fill: #000;
+              }
+
+              text.axis-worktime {
+                fill: #000;
+              }
          </style>
     </head>
     <body>
@@ -58,8 +77,11 @@
               <div class="col-md-12">
                   <div style="padding-bottom: 10px;"> <strong> FILTER BY </strong></div>
                   <label style="font-weight: normal" class="control-label">Bill</label>
-                <select id='billFilter' class="" style="width: 120px;" multiple="multiple">
-                </select>
+                    <select id='billFilter' class="" style="width: 120px;" multiple="multiple">
+                    </select>
+                  <label style="font-weight: normal" class="control-label">Bill Status</label>
+                    <select id='billStatusFilter' class="" style="width: 120px;" multiple="multiple">
+                    </select>
               </div>
           </div>
           <hr>
@@ -73,8 +95,8 @@
                 </div>
               </div>
               <div class="col-md-3">
-
-          </div>
+                <div id="chart"></div>
+              </div>
         </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
@@ -84,8 +106,6 @@
         <script src="http://d3js.org/d3.v3.min.js"></script>
         <script src="js/scatterplot.js"></script>
         <script src="js/multiple-select.js"></script>
-        <script>
-
-        </script>
+        <script src="js/heatmap.js"></script>
     </body>
 </html>
