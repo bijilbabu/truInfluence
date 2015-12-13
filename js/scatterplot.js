@@ -88,9 +88,9 @@ var tooltip = d3.select("body")
 function loadVisualization() {
 
 
-    var margin = {top: 30, right: 10, bottom: 70, left: 70},
-        width = 600 - margin.left - margin.right,
-        height = 600 - margin.top - margin.bottom;
+    var margin = {top: 15, right: 10, bottom: 70, left: 70},
+        width = 530 - margin.left - margin.right,
+        height = 530 - margin.top - margin.bottom;
 
     var spDispatcher = {
         add: function(view){
@@ -161,7 +161,7 @@ function loadVisualization() {
               .attr("x", width/2)
               .attr("y", 55)
               .style("text-anchor", "middle")
-              .text("Amount of Funding From Supporters");
+              .text("Funding From Supporters");
 
          // y-axis
           this.ygroup = this.svg.append("g")
@@ -174,7 +174,7 @@ function loadVisualization() {
               .attr("y", -70)
               .attr("dy", ".71em")
               .style("text-anchor", "middle")
-              .text("Amount of Funding From Opposers");
+              .text("Funding From Opposers");
         },
         getItem : function(d){ return d3.select('svg').selectAll('circle').filter(function(e){return d.billName == e.billName})},
         mouseover: function(d){
