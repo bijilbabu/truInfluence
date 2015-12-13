@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <link rel="stylesheet" href="css/multiple-select.css">
         <style>
            .header {
@@ -12,6 +13,10 @@
              text-align: center;
              color: white;
            }
+           /*.navbar-custom {
+              color: #FFFFFF;
+              background-color: #CC3333;
+          }*/
            #listDiv {
              float:left;
              width:25%;
@@ -62,10 +67,10 @@
          </style>
     </head>
     <body>
-        <nav class="navbar navbar-default">
+        <nav class="navbar navbar-primary navbar-custom" style="margin-bottom: 0px;">
             <div class="container-fluid" style="padding-left: 40px;">
                 <div class="navbar-header">
-                  <a class="navbar-brand" href="#"><span><b>tru</b></span>Influence</a>
+                  <a class="navbar-brand" href="#" style="font-size:20px;"><span><b>tru</b></span>Influence</a>
                 </div>
             </div>
         </nav>
@@ -99,6 +104,17 @@
                 <div id="chart"></div>
               </div>
         </div>
+
+        <script>
+        $(document).ready(function(){
+          $("#demo").on("hide.bs.collapse", function(){
+            $(".btn").html('<span class="glyphicon glyphicon-collapse-down"></span> Show Filters');
+          });
+          $("#demo").on("show.bs.collapse", function(){
+            $(".btn").html('<span class="glyphicon glyphicon-collapse-up"></span> Hide Filters');
+          });
+        });
+        </script>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
