@@ -161,6 +161,8 @@ function loadVisualization() {
               .attr("x", width/2)
               .attr("y", 55)
               .style("text-anchor", "middle")
+              // .style("font-size", "12px")
+              .style("font-weight", "normal")
               .text("Funding From Supporters");
 
          // y-axis
@@ -174,7 +176,22 @@ function loadVisualization() {
               .attr("y", -70)
               .attr("dy", ".71em")
               .style("text-anchor", "middle")
+              // .style("font-size", "12px")
+              .style("font-weight", "normal")
               .text("Funding From Opposers");
+
+            this.legend = this.svg.append("g")
+              .attr("class","legend")
+              .attr("transform","translate(50,30)")
+              .style("font-size","12px")
+              .call(d3.legend);
+
+            setTimeout(function() {
+              this.legend = this.svg.append("circle")
+                .style("font-size","20px")
+                .attr("data-style-padding",10)
+                .call(d3.legend)
+            },1000);
         },
         getItem : function(d){ return d3.select('svg').selectAll('circle').filter(function(e){return d.billName == e.billName})},
         mouseover: function(d){
@@ -221,8 +238,10 @@ function loadVisualization() {
             cx: this.xMap,
             cy: this.yMap,
             fill: function(d) { return _this.color(_this.cValue(d));} ,opacity: 0.5
-            })
+          }).attr("data-legend",function(d) { return d.name});
+
         }
+
     };
 
     var billFilter = loadFilter('#billFilter', function(e, d) {return d.billName == e.billName;}, function(d){return d.billName}, spDispatcher, 'billName');
