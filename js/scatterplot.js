@@ -104,9 +104,9 @@ function loadVisualization() {
                     .style("padding", "10px")
                     .style("color","black");
 
-    var margin = {top: 30, right: 10, bottom: 70, left: 70},
-        width = 600 - margin.left - margin.right,
-        height = 600 - margin.top - margin.bottom;
+    var margin = {top: 20, right: 10, bottom: 70, left: 70},
+        width = 550 - margin.left - margin.right,
+        height = 550 - margin.top - margin.bottom;
 
     var spDispatcher = {
         add: function(view){
@@ -158,6 +158,7 @@ function loadVisualization() {
             this.yAxis = d3.svg.axis().scale(this.yScale).orient("left").tickFormat(function(d){return "$" + +d/1000 + "k"});
 
             // setup fill color
+            // billStatus
             this.cValue = function(d) { return d.billStatus;};
             this.color = d3.scale.category10();
 
@@ -236,6 +237,7 @@ function loadVisualization() {
             cy: this.yMap,
             fill: function(d) { return _this.color(_this.cValue(d));} ,opacity: 0.5
             })
+
         }
     };
 
