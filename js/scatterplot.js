@@ -199,7 +199,7 @@ function loadVisualization() {
             // d3.select('#infoDiv').html(" <b>Bill</b> : " + d.billName + "<br> <b>Bill Status</b> : " + d.billStatus +"<br> <b>Money Given In Support</b> : " + d3.format("$,")(d.moneyGivenInSupport) + "<br> <b>Money Spent In Oppose</b> : " + d3.format("$,")(d.moneySpentInOppose))
 
             var tooltip = d3.select("#infoDiv").style("visibility", "visible");;
-            // d3.select("#infoDiv").style("visibility", "visible");
+            
             tooltip.select("#BillName").text(d.billName);
             tooltip.select("#BillStatus").text(d.billStatus);
             tooltip.select("#InSupport").text(d3.format("$,")(d.moneyGivenInSupport));
