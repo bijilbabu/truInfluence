@@ -144,7 +144,7 @@ function loadVisualization() {
             // setup fill color
             this.cValue = function(d) { return d.billStatus;};
             this.color = d3.scale.category10()
-                .range(["#D63A32", "#0A417C"]);
+                .range(["#971B83","#D63A32", "#0A417C"]);
 
             this.svg =d3.select("svg")
                 .attr("width", width + margin.left + margin.right)
@@ -199,7 +199,7 @@ function loadVisualization() {
             // d3.select('#infoDiv').html(" <b>Bill</b> : " + d.billName + "<br> <b>Bill Status</b> : " + d.billStatus +"<br> <b>Money Given In Support</b> : " + d3.format("$,")(d.moneyGivenInSupport) + "<br> <b>Money Spent In Oppose</b> : " + d3.format("$,")(d.moneySpentInOppose))
 
             var tooltip = d3.select("#infoDiv").style("visibility", "visible");;
-            
+
             tooltip.select("#BillName").text(d.billName);
             tooltip.select("#BillStatus").text(d.billStatus);
             tooltip.select("#InSupport").text(d3.format("$,")(d.moneyGivenInSupport));
