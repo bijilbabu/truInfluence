@@ -65,14 +65,24 @@
               text.axis-worktime {
                 fill: #000;
               }
-              .legend rect {
+              rect.legend-box {
                 fill:white;
                 stroke:black;
-                opacity:0.8;
+                stroke-width: 0.5;
+                opacity: 0.6;
               }
-              text.dayLabel, text.timeLabel{
+              .legend-box {
+                display: inline-block;
+              }
+              text.dayLabel{
                 font-size: 10px;
                 font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+                fill: #337ab7;
+              }
+              text.timeLabel{
+                font-size: 10px;
+                font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+                fill: black;
               }
          </style>
     </head>
@@ -111,7 +121,7 @@
                 </div>
               </div>
               <div class="col-md-3">
-                <div id="infoDiv" style="padding-bottom: 25px;"></div>
+                <div id="infoDiv" style="padding-bottom: 25px; padding-top: 5px;"></div>
                 <div id="chart"></div>
               </div>
         </div>
