@@ -180,18 +180,7 @@ function loadVisualization() {
               .style("font-weight", "normal")
               .text("Funding From Opposers");
 
-            this.legend = this.svg.append("g")
-              .attr("class","legend")
-              .attr("transform","translate(50,30)")
-              .style("font-size","12px")
-              .call(d3.legend);
-
-            setTimeout(function() {
-              this.legend = this.svg.append("circle")
-                .style("font-size","20px")
-                .attr("data-style-padding",10)
-                .call(d3.legend)
-            },1000);
+            
         },
         getItem : function(d){ return d3.select('svg').selectAll('circle').filter(function(e){return d.billName == e.billName})},
         mouseover: function(d){
@@ -219,8 +208,15 @@ function loadVisualization() {
             this.ygroup.transition().call(this.yAxis);
 
             this.viz = this.svg.selectAll("circle").data(data, function(d){return d.billName;});
-            this.viz.enter()
-            .append("circle");
+            this.viz.enter().append("circle").attr('data-legend', function(d) { 
+                return d.billStatus;
+            }).attr({
+            r: 4,
+            cx: this.xMap,
+            cy: this.yMap,
+            fill: function(d) { return _this.color(_this.cValue(d));},
+            opacity: 0.5
+            });
             this.viz.on("mouseover", function(d) { spDispatcher.notify('mouseover', d) })
             .on("mouseout", function(d) { spDispatcher.notify('mouseout', d) })
             .on("mousemove", function(d) { spDispatcher.notify('mousemove', d) })
@@ -232,16 +228,22 @@ function loadVisualization() {
             });
 
             this.viz.exit().remove();
-
-            this.viz.transition().attr({
-            r: 4,
-            cx: this.xMap,
-            cy: this.yMap,
-            fill: function(d) { return _this.color(_this.cValue(d));} ,opacity: 0.5
-          }).attr("data-legend",function(d) { return d.name});
-
+            
+            this.viz.transition();
+            
+            this.legend = this.svg.append("g")
+              .attr("class","legend")
+              .attr("transform","translate(50,30)")
+              .style("font-size","12px")
+              .call(d3.legend);
+            
+            setTimeout(function() {
+              this.legend = this.svg.append("circle")
+                .style("font-size","20px")
+                .attr("data-style-padding",10)
+                .call(d3.legend)
+            },1000);
         }
-
     };
 
     var billFilter = loadFilter('#billFilter', function(e, d) {return d.billName == e.billName;}, function(d){return d.billName}, spDispatcher, 'billName');
