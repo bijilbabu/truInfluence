@@ -180,18 +180,19 @@ function loadVisualization() {
               .style("font-weight", "normal")
               .text("Funding From Opposers");
 
-            this.legend = this.svg.append("g")
-              .attr("class","legend")
-              .attr("transform","translate(50,30)")
-              .style("font-size","12px")
-              .call(d3.legend);
+          // legend
+          this.legend = this.svg.append("g")
+            .attr("class","legend")
+            .attr("transform","translate(50,30)")
+            .style("font-size","12px")
+            .call(d3.legend);
 
-            setTimeout(function() {
-              this.legend = this.svg.append("circle")
-                .style("font-size","20px")
-                .attr("data-style-padding",10)
-                .call(d3.legend)
-            },1000);
+          setTimeout(function() {
+            this.legend = this.svg.append("circle")
+              .style("font-size","20px")
+              .attr("data-style-padding",10)
+              .call(d3.legend)
+          },1000);
         },
         getItem : function(d){ return d3.select('svg').selectAll('circle').filter(function(e){return d.billName == e.billName})},
         mouseover: function(d){
@@ -208,7 +209,7 @@ function loadVisualization() {
 
         click: function(d){
             loadHeatMapChart(_.filter(hmData, 'bill', d.billName));
-            d3.select('#infoDiv').html(" <b>Bill</b> : " + d.billName + "<br> <b>Money Given In Support</b> : " + d3.format("$,")(d.moneyGivenInSupport) + "<br> <b>Money Spent In Oppose</b> : " + d3.format("$,")(d.moneySpentInOppose))},
+            d3.select('#infoDiv').html(" <b>Bill</b> : " + d.billName + "<br> <b>Bill Status</b> : " + d.billStatus +"<br> <b>Money Given In Support</b> : " + d3.format("$,")(d.moneyGivenInSupport) + "<br> <b>Money Spent In Oppose</b> : " + d3.format("$,")(d.moneySpentInOppose))},
 
 
         onDataUpdate: function(data)
@@ -233,12 +234,14 @@ function loadVisualization() {
 
             this.viz.exit().remove();
 
-            this.viz.transition().attr({
-            r: 4,
-            cx: this.xMap,
-            cy: this.yMap,
-            fill: function(d) { return _this.color(_this.cValue(d));} ,opacity: 0.5
-          }).attr("data-legend",function(d) { return d.name});
+            this.viz.transition()
+            .attr({
+              r: 4,
+              cx: this.xMap,
+              cy: this.yMap,
+              fill: function(d) { return _this.color(_this.cValue(d));} ,opacity: 0.5
+            })
+            .attr("data-legend",function(d) { return d.name});
 
         }
 
