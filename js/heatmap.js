@@ -112,7 +112,7 @@ function loadHeatMapData(tsvFile) {
 
           legend.append("text")
             .attr("class", "mono")
-            .text(function(d) { return "≥ " + Math.round(d); })
+            .text(function(d) { return d; })
             .attr("x", function(d, i) { return legendElementWidth * i; })
             .attr("y", height + gridSize);
 
