@@ -69,18 +69,18 @@
                 fill:white;
                 stroke:black;
                 stroke-width: 0.5;
-                opacity: 0.6;
+                opacity: 0.5;
               }
               .legend-box {
                 display: inline-block;
               }
               text.dayLabel{
-                font-size: 10px;
+                font-size: 11px;
                 font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
                 fill: #337ab7;
               }
               text.timeLabel{
-                font-size: 10px;
+                font-size: 11px;
                 font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
                 fill: black;
               }
@@ -121,7 +121,12 @@
                 </div>
               </div>
               <div class="col-md-3">
-                <div id="infoDiv" style="padding-bottom: 25px; padding-top: 5px;"></div>
+                <div id="infoDiv" class="info" style="padding-bottom: 25px; padding-top: 5px; visibility: hidden;">
+                  <div style="font-size:24px">Bill <span id="BillName"></span></div>
+                  <span id="BillStatus"></span><br>
+                  <span id="InSupport"></span> From Funders Who Support<br>
+                  <span id="InOppose"></span> From Funders Who Oppose
+                </div>
                 <div id="chart"></div>
               </div>
         </div>

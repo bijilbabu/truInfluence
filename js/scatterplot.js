@@ -143,7 +143,8 @@ function loadVisualization() {
 
             // setup fill color
             this.cValue = function(d) { return d.billStatus;};
-            this.color = d3.scale.category10();
+            this.color = d3.scale.category10()
+                .range(["#D63A32", "#0A417C"]);
 
             this.svg =d3.select("svg")
                 .attr("width", width + margin.left + margin.right)
@@ -195,7 +196,15 @@ function loadVisualization() {
 
         click: function(d){
             loadHeatMapChart(_.filter(hmData, 'bill', d.billName));
-            d3.select('#infoDiv').html(" <b>Bill</b> : " + d.billName + "<br> <b>Bill Status</b> : " + d.billStatus +"<br> <b>Money Given In Support</b> : " + d3.format("$,")(d.moneyGivenInSupport) + "<br> <b>Money Spent In Oppose</b> : " + d3.format("$,")(d.moneySpentInOppose))},
+            // d3.select('#infoDiv').html(" <b>Bill</b> : " + d.billName + "<br> <b>Bill Status</b> : " + d.billStatus +"<br> <b>Money Given In Support</b> : " + d3.format("$,")(d.moneyGivenInSupport) + "<br> <b>Money Spent In Oppose</b> : " + d3.format("$,")(d.moneySpentInOppose))
+
+            var tooltip = d3.select("#infoDiv").style("visibility", "visible");;
+            // d3.select("#infoDiv").style("visibility", "visible");
+            tooltip.select("#BillName").text(d.billName);
+            tooltip.select("#BillStatus").text(d.billStatus);
+            tooltip.select("#InSupport").text(d3.format("$,")(d.moneyGivenInSupport));
+            tooltip.select("#InOppose").text(d3.format("$,")(d.moneySpentInOppose));
+          },
 
 
         onDataUpdate: function(data)
@@ -213,7 +222,7 @@ function loadVisualization() {
             cx: this.xMap,
             cy: this.yMap,
             fill: function(d) { return _this.color(_this.cValue(d));},
-            opacity: 0.5
+            opacity: 0.6
             });
             this.viz.on("mouseover", function(d) { spDispatcher.notify('mouseover', d) })
             .on("mouseout", function(d) { spDispatcher.notify('mouseout', d) })
@@ -228,6 +237,9 @@ function loadVisualization() {
             this.viz.exit().remove();
 
             this.viz.transition();
+
+            var dataL = 0;
+            var offset = 80;
 
             this.legend = this.svg.append("g")
               .attr("class","legend")

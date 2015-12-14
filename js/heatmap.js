@@ -1,10 +1,10 @@
-var margin = { top: 50, right: 0, bottom: 100, left: 100 },
+var margin = { top: 70, right: 0, bottom: 100, left: 120 },
           width = 600 - margin.left - margin.right,
           height = 600 - margin.top - margin.bottom,
           gridSize = Math.floor(width / 25),
           legendElementWidth = gridSize*2,
           buckets = 9,
-          colors = ["#ffffd9","#081d58"], // alternatively colorbrewer.YlGnBu[9]
+          colors = ["#042959","#BABABA"], // alternatively colorbrewer.YlGnBu[9]
           datasets = ["datahm.csv"],
             hmData;
 
@@ -80,9 +80,9 @@ function loadHeatMapData(tsvFile) {
                     return tooltip.style("visibility", "visible").append("span")
                     .html(" <b>Bill</b> : " + d.bill +
                           "<br> <b>Legislator</b> : " + d.leg +
-                          "<br> <b>Did Legislator Voted in favor?</b> : " + d.legVoted +
+                          "<br> <b>Did Legislator Vote for Bill?</b> : " + d.legVoted +
                           "<br> <b>Organization</b> : " + d.org +
-                          "<br> <b>Did Organization Supported the Bill?</b> : " + d.orgSupported +
+                          "<br> <b>Did Organization Support the Bill?</b> : " + d.orgSupported +
                           "<br> <b>Did legislator and Orgnaization agree?</b> : " + d.bothAgree +
                           "<br> <b>Money received from Organization</b> : " + d3.format("$,")(d.money))})
               .on('mouseout', function(d){
