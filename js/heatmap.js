@@ -59,7 +59,7 @@ function loadHeatMapData(tsvFile) {
                                 .attr("class", function(d, i) { return ((i%2 == 0) ? "timeLabel mono axis axis-worktime" : "timeLabel mono axis"); });
 
             var colorScale = d3.scale.ordinal()
-              .domain([0, buckets - 1, d3.max(data, function (d) { return d.bothAgree; })])
+              .domain(_.uniq(_.pluck(data, 'bothAgree')))
               .range(colors);
 
           var cards = svg.selectAll(".hour")
@@ -97,7 +97,7 @@ function loadHeatMapData(tsvFile) {
 
           cards.exit().remove();
 
-          /*var legend = svg.selectAll(".legend")
+          var legend = svg.selectAll(".legend")
               .data([0].concat(colorScale.ordinal()), function(d) { return d; });
 
           legend.enter().append("g")
@@ -116,7 +116,7 @@ function loadHeatMapData(tsvFile) {
             .attr("x", function(d, i) { return legendElementWidth * i; })
             .attr("y", height + gridSize);
 
-          legend.exit().remove();*/
+          legend.exit().remove();
 
         };
 
