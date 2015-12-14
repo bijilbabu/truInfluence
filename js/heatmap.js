@@ -1,7 +1,7 @@
-var margin = { top: 50, right: 0, bottom: 100, left: 125 },
+var margin = { top: 50, right: 0, bottom: 100, left: 100 },
           width = 600 - margin.left - margin.right,
           height = 600 - margin.top - margin.bottom,
-          gridSize = Math.floor(width / 20),
+          gridSize = Math.floor(width / 25),
           legendElementWidth = gridSize*2,
           buckets = 9,
           colors = ["#ffffd9","#081d58"], // alternatively colorbrewer.YlGnBu[9]

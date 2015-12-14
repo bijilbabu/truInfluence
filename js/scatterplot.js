@@ -206,7 +206,7 @@ function loadVisualization() {
             this.ygroup.transition().call(this.yAxis);
 
             this.viz = this.svg.selectAll("circle").data(data, function(d){return d.billName;});
-            this.viz.enter().append("circle").attr('data-legend', function(d) { 
+            this.viz.enter().append("circle").attr('data-legend', function(d) {
                 return d.billStatus;
             }).attr({
             r: 4,
@@ -226,15 +226,15 @@ function loadVisualization() {
             });
 
             this.viz.exit().remove();
-            
+
             this.viz.transition();
-            
+
             this.legend = this.svg.append("g")
               .attr("class","legend")
               .attr("transform","translate(50,30)")
               .style("font-size","12px")
               .call(d3.legend);
-            
+
             setTimeout(function() {
               this.legend = this.svg.append("circle")
                 .style("font-size","20px")
