@@ -98,7 +98,7 @@ function loadHeatMapData(tsvFile) {
           cards.exit().remove();
 
           var legend = svg.selectAll(".legend")
-              .data([0].concat(colorScale.ordinal()), function(d) { return d; });
+              .data([0].concat(colorScale.range()), function(d) { return d; });
 
           legend.enter().append("g")
               .attr("class", "legend");
