@@ -1,7 +1,7 @@
-var margin = { top: 50, right: 0, bottom: 100, left: 100 },
+var margin = { top: 50, right: 0, bottom: 100, left: 125 },
           width = 600 - margin.left - margin.right,
           height = 600 - margin.top - margin.bottom,
-          gridSize = Math.floor(width / 35),
+          gridSize = Math.floor(width / 20),
           legendElementWidth = gridSize*2,
           buckets = 9,
           colors = ["#ffffd9","#081d58"], // alternatively colorbrewer.YlGnBu[9]
@@ -13,7 +13,7 @@ var margin = { top: 50, right: 0, bottom: 100, left: 100 },
           .attr("height", height + margin.top + margin.bottom)
           .append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    
+
 function loadHeatMapData(tsvFile) {
         d3.csv(tsvFile,
         function(d) {
@@ -28,13 +28,13 @@ function loadHeatMapData(tsvFile) {
           };
         },
         function(error,data){
-          hmData = data;   
+          hmData = data;
         });
       };
-               
+
      function loadHeatMapChart(data) {
             legislators = _.uniq(_.pluck(data, 'leg'));
-      
+
             var dayLabels = svg.selectAll(".dayLabel")
                                 .data(legislators)
                                 .enter().append("text")
@@ -46,7 +46,7 @@ function loadHeatMapData(tsvFile) {
                                 .attr("class", function (d, i) { return (( i%2 == 0) ? "dayLabel mono axis axis-workweek" : "dayLabel mono axis"); })
 
             organization = _.uniq(_.pluck(data, 'org'));
-            
+
             var timeLabels = svg.selectAll(".timeLabel")
                                 .data(organization)
                                 .enter().append("text")
@@ -57,7 +57,7 @@ function loadHeatMapData(tsvFile) {
                                 .style("text-anchor", "start")
                                 .attr("transform", function(d, i) { return "translate(" + ((i * gridSize) + 10) + ", -6) rotate(-90)";} )
                                 .attr("class", function(d, i) { return ((i%2 == 0) ? "timeLabel mono axis axis-worktime" : "timeLabel mono axis"); });
-          
+
             var colorScale = d3.scale.ordinal()
               .domain([0, buckets - 1, d3.max(data, function (d) { return d.bothAgree; })])
               .range(colors);
@@ -78,10 +78,10 @@ function loadHeatMapData(tsvFile) {
               .style("fill", colors[0])
               .on('mouseover', function(d){
                     return tooltip.style("visibility", "visible").append("span")
-                    .html(" <b>Bill</b> : " + d.bill + 
-                          "<br> <b>Legislator</b> : " + d.leg + 
+                    .html(" <b>Bill</b> : " + d.bill +
+                          "<br> <b>Legislator</b> : " + d.leg +
                           "<br> <b>Did Legislator Voted in favor?</b> : " + d.legVoted +
-                          "<br> <b>Organization</b> : " + d.org + 
+                          "<br> <b>Organization</b> : " + d.org +
                           "<br> <b>Did Organization Supported the Bill?</b> : " + d.orgSupported +
                           "<br> <b>Did legislator and Orgnaization agree?</b> : " + d.bothAgree +
                           "<br> <b>Money received from Organization</b> : " + d3.format("$,")(d.money))})
@@ -94,7 +94,7 @@ function loadHeatMapData(tsvFile) {
               .style("fill", function(d) { return colorScale(d.bothAgree); });
 
           cards.select("title").text(function(d) { return d.bothAgree; });
-          
+
           cards.exit().remove();
 
           /*var legend = svg.selectAll(".legend")
@@ -118,7 +118,6 @@ function loadHeatMapData(tsvFile) {
 
           legend.exit().remove();*/
 
-        }; 
+        };
 
       loadHeatMapData(datasets[0]);
-      

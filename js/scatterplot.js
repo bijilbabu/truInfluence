@@ -179,8 +179,6 @@ function loadVisualization() {
               // .style("font-size", "12px")
               .style("font-weight", "normal")
               .text("Funding From Opposers");
-
-            
         },
         getItem : function(d){ return d3.select('svg').selectAll('circle').filter(function(e){return d.billName == e.billName})},
         mouseover: function(d){
@@ -197,7 +195,7 @@ function loadVisualization() {
 
         click: function(d){
             loadHeatMapChart(_.filter(hmData, 'bill', d.billName));
-            d3.select('#infoDiv').html(" <b>Bill</b> : " + d.billName + "<br> <b>Money Given In Support</b> : " + d3.format("$,")(d.moneyGivenInSupport) + "<br> <b>Money Spent In Oppose</b> : " + d3.format("$,")(d.moneySpentInOppose))},
+            d3.select('#infoDiv').html(" <b>Bill</b> : " + d.billName + "<br> <b>Bill Status</b> : " + d.billStatus +"<br> <b>Money Given In Support</b> : " + d3.format("$,")(d.moneyGivenInSupport) + "<br> <b>Money Spent In Oppose</b> : " + d3.format("$,")(d.moneySpentInOppose))},
 
 
         onDataUpdate: function(data)
