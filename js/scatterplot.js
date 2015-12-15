@@ -253,10 +253,9 @@ function loadVisualization() {
             var dataL = 0;
             var offset = 80;
 
-
             this.legend = this.svg.append("g")
               .attr("class","legend")
-              .attr("transform","translate(500,0)")
+              .attr("transform","translate(360,390)")
               .style("font-size","12px")
               .call(d3.legend);
 
