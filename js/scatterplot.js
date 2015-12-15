@@ -180,6 +180,17 @@ function loadVisualization() {
               // .style("font-size", "12px")
               .style("font-weight", "normal")
               .text("Funding From Opposers");
+
+          // diagonal line
+          this.diagonal = this.svg.append("line")
+            .attr("x1", this.xScale(0))
+            .attr("y1", this.yScale(0))
+            .attr("x2", this.xScale(6000))
+            .attr("y2", this.yScale(6000))
+            .attr("stroke-width", 2)
+            .attr("stroke", "grey")
+            .attr("stroke-dasharray", "2")
+            ;
         },
         getItem : function(d){ return d3.select('svg').selectAll('circle').filter(function(e){return d.billName == e.billName})},
         mouseover: function(d){
