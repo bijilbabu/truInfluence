@@ -130,16 +130,16 @@ function loadVisualization() {
         init: function(width, height, margin) {
             _this=this;
             // setup x
-            this.xValue = function(d) { return d.moneyGivenInSupport;}; // data -> value
-            this.xScale = d3.scale.linear().range([0,width]); // value -> display
+            this.xValue = function(d) { return d.moneyGivenInSupport == 0 ? d.moneyGivenInSupport + 10 : d.moneyGivenInSupport;}; // data -> value
+            this.xScale = d3.scale.log().range([0,width]); // value -> display
             this.xMap = function(d) { return this.xScale(this.xValue(d));}.bind(this); // data -> display
-            this.xAxis = d3.svg.axis().scale(this.xScale).orient("bottom").tickFormat(function(d){return "$" + +d/1000 + "k"});
+            this.xAxis = d3.svg.axis().scale(this.xScale).orient("bottom");//.tickFormat(function(d){return "$" + +d/1000 + "k"});
 
             // setup y
-            this.yValue = function(d) { return d.moneySpentInOppose;}; // data -> value
-            this.yScale = d3.scale.linear().range([height, 0]), // value -> display
+            this.yValue = function(d) { return d.moneySpentInOppose == 0 ? d.moneySpentInOppose + 10 : d.moneySpentInOppose;}; // data -> value
+            this.yScale = d3.scale.log().range([height, 0]), // value -> display
             this.yMap = function(d) { return this.yScale(this.yValue(d));}.bind(this), // data -> display
-            this.yAxis = d3.svg.axis().scale(this.yScale).orient("left").tickFormat(function(d){return "$" + +d/1000 + "k"});
+            this.yAxis = d3.svg.axis().scale(this.yScale).orient("left");//.tickFormat(function(d){return "$" + +d/1000 + "k"});
 
             // setup fill color
             this.cValue = function(d) { return d.billStatus;};
@@ -183,14 +183,15 @@ function loadVisualization() {
 
           // diagonal line
           this.diagonal = this.svg.append("line")
-            .attr("x1", this.xScale(0))
-            .attr("y1", this.yScale(0))
-            .attr("x2", this.xScale(100))
-            .attr("y2", this.yScale(100))
+            .attr("x1", 450)
+            .attr("y1", 0)
+            .attr("x2", 0)
+            .attr("y2", 450)
             .attr("stroke-width", 2)
             .attr("stroke", "grey")
             .attr("stroke-dasharray", "2")
             ;
+            //this.yScale(300)
         },
         getItem : function(d){ return d3.select('svg').selectAll('circle').filter(function(e){return d.billName == e.billName})},
         mouseover: function(d){
@@ -252,9 +253,10 @@ function loadVisualization() {
             var dataL = 0;
             var offset = 80;
 
+
             this.legend = this.svg.append("g")
               .attr("class","legend")
-              .attr("transform","translate(50,30)")
+              .attr("transform","translate(500,0)")
               .style("font-size","12px")
               .call(d3.legend);
 
